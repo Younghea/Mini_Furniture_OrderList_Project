@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- Created by Kindy -->
+<meta charset="UTF-8">
+<title>Furniture Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align:center; 
+    font-weight: bolder;
+    color: blue;
+    margin-top: 2em;
+}
+
+article.container {
+    max-width: 720px;
+    margin: 24px auto;
+    padding: 16px;
+    border: 4px solid blue;
+    border-radius: 12px;
+}
+
+#secResultObject p {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    column-gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.priceBox {
+    width: 72px;
+    border: none;
+    background-color: transparent;
+    text-align: right;
+    font-weight: bold;
+}
+
+.qtyBox {
+    width: 48px;
+}
+
+#secResultObject hr {
+    border: 0;
+    border-top: 1px solid #cccccc;
+    margin: 10px 0;
+}
+
+#secResultObject button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 6px 18px;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: blue;
+    margin-top: 3em;
+    margin-bottom: 0em;
+}
+
+/* Responsive layout */
+@media (max-width: 520px) {
+    #secResultObject p {
+        grid-template-columns: 1fr;
+        row-gap: 4px;
+    }
+
+    .priceBox,
+    .qtyBox {
+        text-align: left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Shop</h1>
+</header>
+
+<main>
+   <h2>&nbsp;</h2>
+        <article class="container">
+    <h2>&nbsp;</h2> 
+
+    <section id="secResultObject">
+    <h2>&nbsp;</h2> </section>
+
+</article>
+
+</main>
+
+<script>
+
+/* ===== Product array ===== */
+var products = [
+  { product: "Adirondack Chair",    type: "c", price: 100 },
+  { product: "Barcelona Chair",     type: "c", price: 150 },
+  { product: "Chaise Longue",       type: "c", price: 500 },
+  { product: "Chesterfield Chair",  type: "c", price: 800 },
+  { product: "Coffee Table",        type: "t", price: 900 },
+  { product: "Dining Table",        type: "t", price: 1500 },
+  { product: "Director’s Chair",    type: "c", price: 660 },
+  { product: "Eames Lounge Chair",  type: "c", price: 1000 },
+  { product: "Foyer Table",         type: "t", price: 600 },
+  { product: "Patio Table",         type: "t", price: 450 },
+  { product: "Rocking Chair",       type: "c", price: 350 },
+  { product: "Side Table",          type: "t", price: 200 },
+  { product: "Stacking Chair",      type: "c", price: 80 },
+  { product: "Wingback Chair",      type: "c", price: 950 },
+  { product: "Wishbone Chair",      type: "c", price: 250 }
+];
+
+function fCleanUp()
+{
+    document.getElementById("secResultObject").innerHTML = "";
+}
+
+function fLoadShop()
+{
+    fCleanUp();
+
+    var section = document.getElementById("secResultObject");
+    var form = document.createElement("form");
+
+    for (var i = 0; i < products.length; i++)
+    {
+      
+        if (products[i].type === "c" )
+        {
+            var p = document.createElement("p");
+
+            p.appendChild(
+                document.createTextNode(products[i].product)
+            );
+
+            var priceInput = document.createElement("input");
+            priceInput.setAttribute("type", "text");
+            priceInput.setAttribute("value", "$" + products[i].price);
+            priceInput.setAttribute("readonly", "readonly");
+            priceInput.setAttribute("class", "priceBox");
+
+            var qtyInput = document.createElement("input");
+            qtyInput.setAttribute("type", "number");
+            qtyInput.setAttribute("min", "0");
+            qtyInput.setAttribute("value", "0");
+            qtyInput.setAttribute("data-price", products[i].price);
+            qtyInput.setAttribute("class", "qtyBox");
+
+            p.appendChild(priceInput);
+            p.appendChild(qtyInput);
+
+            form.appendChild(p);
+            form.appendChild(document.createElement("hr"));
+        }
+    }
+
+    var submitBtn = document.createElement("button");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.appendChild(document.createTextNode("Submit"));
+
+    form.appendChild(submitBtn);
+    section.appendChild(form);
+
+    form.addEventListener("submit", function (event)
+    {
+        event.preventDefault();
+
+        var inputs = document.getElementsByTagName("input");
+        var totalQty = 0;
+        var totalCost = 0;
+
+        for (var j = 0; j < inputs.length; j++)
+        {
+            if (inputs[j].className === "qtyBox")
+            {
+                var qty = Number(inputs[j].value);
+                var price = Number(inputs[j].getAttribute("data-price"));
+
+                totalQty += qty;
+                totalCost += qty * price;
+            }
+        }
+
+        alert(
+            "You have ordered " +
+            totalQty +
+            " items for a total of $" +
+            totalCost +
+            "."
+        );
+    });
+}
+
+fLoadShop();
+
+</script>
+
+</body>
+</html>
